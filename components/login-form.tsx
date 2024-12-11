@@ -23,8 +23,8 @@ import {
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  id: z.string().min(2, {
-    message: 'id must be at least 2 characters.',
+  username: z.string().min(2, {
+    message: 'username must be at least 2 characters.',
   }),
 
   password: z.string().min(6, {
@@ -38,30 +38,13 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: '',
+      username: '',
       password: '',
     },
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
-    });
-
-    if (!response.ok) {
-      console.error('id or password is different');
-      return;
-    }
-
-    router.push('/profiles');
-    // console.log(values);
-  }
+  async function onSubmit(values: z.infer<typeof formSchema>) {}
 
   return (
     <Form {...form}>
@@ -70,22 +53,22 @@ export function LoginForm() {
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
-              Enter your id below to login to your account
+              Enter your username below to login to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
               <FormField
                 control={form.control}
-                name="id"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>id</FormLabel>
+                    <FormLabel>username</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="shadcn"
                         {...field}
-                        autoComplete="id"
+                        autoComplete="username"
                       />
                     </FormControl>
                     <FormMessage />
