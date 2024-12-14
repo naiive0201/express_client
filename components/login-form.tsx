@@ -44,7 +44,37 @@ export function LoginForm() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // call an api to login
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        // alert dialog with chadcn.js
+        // alert('Login failed');
+        alert('Login failed');
+        return;
+      }
+
+      const data = await response.json();
+      const token = data.token;
+
+      // Store the token in localStorage or cookies
+      localStorage.setItem('token', token);
+
+      // Redirect to the dashboard or another page
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  }
 
   return (
     <Form {...form}>
