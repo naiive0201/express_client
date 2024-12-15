@@ -21,6 +21,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -33,6 +41,9 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const router = useRouter();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,9 +67,8 @@ export function LoginForm() {
       });
 
       if (!response.ok) {
-        // alert dialog with chadcn.js
-        // alert('Login failed');
-        alert('Login failed');
+        setErrorMessage('Invalid credentials');
+        setOpen(true);
         return;
       }
 
@@ -72,66 +82,79 @@ export function LoginForm() {
       router.push('/dashboard');
     } catch (error) {
       console.error('Error:', error);
+      setErrorMessage('An unexpected error occurred');
+      setOpen(true);
       // Handle error (e.g., show error message to user)
     }
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <Card className="mx-auto max-w-sm">
-          <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-              Enter your username below to login to your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>username</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="shadcn"
-                        {...field}
-                        autoComplete="username"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>password</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="shadcn"
-                        autoComplete="current-password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <Card className="mx-auto max-w-sm">
+            <CardHeader>
+              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardDescription>
+                Enter your username below to login to your account
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="shadcn"
+                          {...field}
+                          autoComplete="username"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>password</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="shadcn"
+                          autoComplete="current-password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </form>
-    </Form>
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </form>
+      </Form>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Login Failed</AlertDialogTitle>
+          <AlertDialogDescription>{errorMessage}</AlertDialogDescription>
+          <AlertDialogAction onClick={() => setOpen(false)}>
+            OK
+          </AlertDialogAction>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
