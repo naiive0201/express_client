@@ -16,7 +16,7 @@ export default async function handler(
 
   const userExist = await getUser(username, password);
   if (userExist) {
-    const token = createToken({ username: username });
+    const token = await createToken({ username: username });
     res.status(200).json({ token });
   } else {
     res.status(401).json({ message: 'Invalid credentials' });

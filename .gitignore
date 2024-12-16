@@ -38,3 +38,6 @@ next-env.d.ts
 
 # lock file
 package-lock.json
+
+# file db
+mydb.db

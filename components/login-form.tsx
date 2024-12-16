@@ -73,10 +73,11 @@ export function LoginForm() {
       }
 
       const data = await response.json();
-      const token = data.token;
+      // const token = data.token;
 
       // Store the token in localStorage or cookies
-      localStorage.setItem('token', token);
+      // localStorage.setItem('token', token);
+      document.cookie = `token=${data.token}; path=/;`;
 
       // Redirect to the dashboard or another page
       router.push('/dashboard');

@@ -4,7 +4,6 @@ import { verifyToken } from '@/lib/jwtUtils'; // Assume you have a function to v
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
-
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
