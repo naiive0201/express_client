@@ -19,3 +19,14 @@ INSERT INTO users(username, password) VALUES ('', '');
 ```
 
 [] settting SECRET_KEY
+
+### prisma cli
+
+```sh
+
+# prisma ui
+npx prisma studio
+
+# migration
+npx prisma migrate resolve --applied 0_init
+```

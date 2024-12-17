@@ -26,3 +26,6 @@ export async function verifyToken(token: string) {
     throw new Error(`Invalid token: ${error}`);
   }
 }
+
+// initial objects setup like prisma client when starting the app
+// to avoid creating new objects every time
