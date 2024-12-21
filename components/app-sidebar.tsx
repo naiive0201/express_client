@@ -24,15 +24,15 @@ const data = {
       items: [
         {
           title: 'Order',
-          url: '#',
+          url: '/order',
         },
         {
           title: 'Customer',
-          url: '#',
+          url: '/customer',
         },
         {
           title: 'Product',
-          url: '#',
+          url: '/product',
         },
       ],
     },
